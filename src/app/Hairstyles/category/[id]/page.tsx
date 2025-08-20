@@ -3,26 +3,31 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const hairstylesData: Record<number, { id: number; name: string; img: string }[]> = {
-  1: [
-     { id: 1, name: "Low Taper Fade", img: "/images/low_taper_fade.jpg" },
-    { id: 2, name: "Buzz Cut", img: "/images/buzz_cut.jpg" },
-  ],
-  2: [
-    { id: 3, name: "Box Braids", img: "/images/box_braids.jpg" },
-    { id: 4, name: "Cornrows", img: "/images/cornrows.jpg" },
-  ],
-  3: [
-    { id: 5, name: "Balayage", img: "/images/coloring/balayage.jpg" },
-    { id: 6, name: "Highlights", img: "/images/coloring/highlights.jpg" },
-  ],
-};
+type Hairstyle = { id: number; name: string; img: string };
 
 export default function CategoryPage() {
   const params = useParams();
   const categoryId = Number(params.id);
-  const hairstyles = hairstylesData[categoryId] || [];
+
+  const [hairstyles, setHairstyles] = useState<Hairstyle[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/hairstyles")
+      .then((res) => res.json())
+      .then((data) => {
+        setHairstyles(data[categoryId] || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch hairstyles:", err);
+        setLoading(false);
+      });
+  }, [categoryId]);
+
+  if (loading) return <p>Loading hairstyles...</p>;
 
   return (
     <div className="hairstyles-container">
