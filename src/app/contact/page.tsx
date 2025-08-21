@@ -17,7 +17,7 @@ export default function ContactPage() {
           <a href="tel:+26657642622" className="text-blue-600 hover:underline"> +266 5764 2622</a>
         </li>
         <li>
-          <strong>Email:</strong> <a href="bokang262@gmail.com" className="text-blue-600 hover:underline">bokang262@gmail.com</a>
+          <strong>Email:</strong> <a href="mailto:bokang262@gmail.com" className="text-blue-600 hover:underline">bokang262@gmail.com</a>
         </li>
       </ul>
 
